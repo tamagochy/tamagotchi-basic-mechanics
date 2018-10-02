@@ -4,12 +4,10 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>ru.tamagotchi</groupId>
-	<artifactId>core</artifactId>
+	<artifactId>basic-mechanics</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
-
-	<name>core</name>
-	<description></description>
+	<name>basic-mechanics</name>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -81,6 +79,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
-
 </project>
