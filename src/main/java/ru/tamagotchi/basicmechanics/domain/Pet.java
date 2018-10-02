@@ -1,8 +1,6 @@
 package ru.tamagotchi.basicmechanics.domain;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -14,8 +12,6 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "PETS")
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class Pet {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,4 +38,22 @@ public class Pet {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private PetStatus status;
+
+    public Pet(
+            Integer ownerId,
+            Integer health,
+            Integer hunger,
+            Integer rest,
+            Integer mood,
+            LocalDateTime lastAccessTime,
+            PetStatus status
+    ) {
+        this.ownerId = ownerId;
+        this.health = health;
+        this.hunger = hunger;
+        this.rest = rest;
+        this.mood = mood;
+        this.lastAccessTime = lastAccessTime;
+        this.status = status;
+    }
 }

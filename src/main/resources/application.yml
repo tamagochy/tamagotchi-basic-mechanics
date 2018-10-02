@@ -2,7 +2,7 @@ spring:
   application:
     name: tamagochi-basicmechanics
   datasource:
-    url: jdbc:postgresql://192.168.99.100:5432/tamagochi-basicmechanics
+    url: jdbc:postgresql://192.168.99.100:5432/tamagochi-basic-mechanics
     username: postgres
     password: postgres
   jpa:

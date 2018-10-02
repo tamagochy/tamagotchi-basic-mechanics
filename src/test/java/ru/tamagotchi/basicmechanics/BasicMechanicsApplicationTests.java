@@ -29,8 +29,8 @@ public class BasicMechanicsApplicationTests {
     @Test
     public void testSearch() {
         int ownerId = 42;
-        Pet pet1 = new Pet(1L, ownerId, 100, 100, 100, 100, LocalDateTime.now(), LEAVE);
-        Pet pet2 = new Pet(2L, ownerId, 100, 100, 100, 100, LocalDateTime.now(), ACTIVE);
+        Pet pet1 = new Pet(ownerId, 100, 100, 100, 100, LocalDateTime.now(), LEAVE);
+        Pet pet2 = new Pet(ownerId, 100, 100, 100, 100, LocalDateTime.now(), ACTIVE);
         petDao.save(pet1);
         petDao.save(pet2);
 
