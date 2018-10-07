@@ -101,8 +101,8 @@ public class Pet {
         this.rest = INDICATOR_CRITICAL_VALUE;
     }
 
-    public void increaseMood() {
-        this.mood += INDICATOR_INCREMENT_VALUE;
+    public void increaseMood(Integer value) {
+        this.mood += value;
         if (this.mood > INDICATOR_MAX_VALUE) {
             this.mood = INDICATOR_MAX_VALUE;
         }

@@ -1,10 +1,12 @@
 package ru.tamagotchi.basicmechanics.controller.advice;
 
 
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -75,6 +77,26 @@ public class ExceptionHandlerControllerAdvice extends ResponseEntityExceptionHan
         exception.getBindingResult()
                 .getFieldErrors()
                 .forEach(fieldError -> errors.add(new ErrorDto(fieldError.getField(), fieldError.getCode())));
+        return handleExceptionInternal(
+                exception,
+                new ResponseDto<>(errors),
+                headers,
+                status,
+                request
+        );
+    }
+
+    @Override
+    @SuppressWarnings("NullableProblems")
+    protected ResponseEntity<Object> handleHttpMessageNotReadable(
+            HttpMessageNotReadableException exception,
+            HttpHeaders headers,
+            HttpStatus status,
+            WebRequest request
+    ) {
+        List<ErrorDto> errors = new ArrayList<>();
+        ((InvalidFormatException) exception.getCause()).getPath()
+                .forEach(reference -> errors.add(new ErrorDto(reference.getFieldName(), "validation.Incorrect")));
         return handleExceptionInternal(
                 exception,
                 new ResponseDto<>(errors),

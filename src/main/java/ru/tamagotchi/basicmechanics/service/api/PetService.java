@@ -1,5 +1,6 @@
 package ru.tamagotchi.basicmechanics.service.api;
 
+import ru.tamagotchi.basicmechanics.domain.ActionCode;
 import ru.tamagotchi.basicmechanics.domain.Pet;
 
 /**
@@ -17,5 +18,5 @@ public interface PetService {
 
     Pet treat();
 
-    Pet play();
+    Pet play(ActionCode code);
 }

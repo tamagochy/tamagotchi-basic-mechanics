@@ -3,7 +3,10 @@ package ru.tamagotchi.basicmechanics.service.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import ru.tamagotchi.basicmechanics.dao.ActionDao;
 import ru.tamagotchi.basicmechanics.dao.PetDao;
+import ru.tamagotchi.basicmechanics.domain.Action;
+import ru.tamagotchi.basicmechanics.domain.ActionCode;
 import ru.tamagotchi.basicmechanics.domain.Pet;
 import ru.tamagotchi.basicmechanics.exception.*;
 import ru.tamagotchi.basicmechanics.service.api.PetService;
@@ -27,6 +30,7 @@ public class PetServiceImpl implements PetService {
 
     private final ScheduleService scheduleService;
     private final PetDao petDao;
+    private final ActionDao actionDao;
 
     @Override
     public Pet getCurrent() {
@@ -97,12 +101,13 @@ public class PetServiceImpl implements PetService {
     }
 
     @Override
-    public Pet play() {
+    public Pet play(ActionCode code) {
+        Action action = actionDao.getByCode(code);
         Pet pet = getCurrent();
         checkPetStatus(pet);
         applySchedule(pet);
         checkIndicator("mood", pet.getMood());
-        pet.increaseMood();
+        pet.increaseMood(action.getValue());
         pet.setLastAccessTime(now());
         return petDao.save(pet);
     }
