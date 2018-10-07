@@ -1,4 +1,4 @@
-package ru.tamagotchi.basicmechanics.exception.handler;
+package ru.tamagotchi.basicmechanics.exception;
 
 import lombok.Getter;
 

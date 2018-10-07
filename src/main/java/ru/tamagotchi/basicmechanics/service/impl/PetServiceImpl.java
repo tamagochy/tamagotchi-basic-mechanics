@@ -5,9 +5,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.tamagotchi.basicmechanics.dao.PetDao;
 import ru.tamagotchi.basicmechanics.domain.Pet;
+import ru.tamagotchi.basicmechanics.exception.IndexFullException;
+import ru.tamagotchi.basicmechanics.exception.PetAlreadyExistException;
 import ru.tamagotchi.basicmechanics.exception.PetNotExistsException;
 import ru.tamagotchi.basicmechanics.exception.PetNotFoundException;
-import ru.tamagotchi.basicmechanics.exception.handler.IndexFullException;
 import ru.tamagotchi.basicmechanics.service.api.PetService;
 
 import static java.time.LocalDateTime.now;
@@ -39,6 +40,12 @@ public class PetServiceImpl implements PetService {
 
     @Override
     public Pet create() {
+        petDao.getAllByOwnerIdAndStatus(42, ACTIVE)
+                .stream()
+                .findAny()
+                .ifPresent(pet -> {
+                    throw new PetAlreadyExistException();
+                });
         Pet pet = new Pet(42, INDEX_MAX_VALUE, INDEX_MAX_VALUE, INDEX_MAX_VALUE, INDEX_MAX_VALUE, now(), now(), ACTIVE);
         return petDao.save(pet);
     }
