@@ -1,6 +1,7 @@
 package ru.tamagotchi.basicmechanics.domain;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -32,7 +33,10 @@ public class Pet {
     @Column(nullable = false)
     private Integer mood;
 
-    @Column
+    @Column(nullable = false)
+    private LocalDateTime createTime;
+
+    @Column(nullable = false)
     private LocalDateTime lastAccessTime;
 
     @Column(nullable = false)
@@ -45,6 +49,7 @@ public class Pet {
             Integer hunger,
             Integer rest,
             Integer mood,
+            LocalDateTime createTime,
             LocalDateTime lastAccessTime,
             PetStatus status
     ) {
@@ -53,6 +58,7 @@ public class Pet {
         this.hunger = hunger;
         this.rest = rest;
         this.mood = mood;
+        this.createTime = createTime;
         this.lastAccessTime = lastAccessTime;
         this.status = status;
     }

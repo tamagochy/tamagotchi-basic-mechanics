@@ -8,9 +8,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 import ru.tamagotchi.basicmechanics.dao.PetDao;
 import ru.tamagotchi.basicmechanics.domain.Pet;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
+import static java.time.LocalDateTime.now;
 import static org.junit.Assert.assertEquals;
 import static ru.tamagotchi.basicmechanics.domain.PetStatus.ACTIVE;
 import static ru.tamagotchi.basicmechanics.domain.PetStatus.LEAVE;
@@ -29,8 +29,8 @@ public class BasicMechanicsApplicationTests {
     @Test
     public void testSearch() {
         int ownerId = 42;
-        Pet pet1 = new Pet(ownerId, 100, 100, 100, 100, LocalDateTime.now(), LEAVE);
-        Pet pet2 = new Pet(ownerId, 100, 100, 100, 100, LocalDateTime.now(), ACTIVE);
+        Pet pet1 = new Pet(ownerId, 100, 100, 100, 100, now(), now(), LEAVE);
+        Pet pet2 = new Pet(ownerId, 100, 100, 100, 100, now(), now(), ACTIVE);
         petDao.save(pet1);
         petDao.save(pet2);
 

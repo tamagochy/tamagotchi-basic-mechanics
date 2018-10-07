@@ -11,6 +11,9 @@ import ru.tamagotchi.basicmechanics.service.api.PetService;
 
 import java.time.LocalDateTime;
 
+import static java.time.LocalDateTime.now;
+import static ru.tamagotchi.basicmechanics.domain.PetStatus.ACTIVE;
+
 /**
  * Created by makar
  * 02.10.2018 18:27
@@ -26,14 +29,14 @@ public class PetServiceImpl implements PetService {
     public Pet getCurrentUserPet() {
         return petDao.getAllByOwnerId(42)
                 .stream()
-                .filter(pet -> pet.getStatus().equals(PetStatus.ACTIVE))
+                .filter(pet -> pet.getStatus().equals(ACTIVE))
                 .findFirst()
                 .orElseThrow(PetNotFound::new);
     }
 
     @Override
     public Pet createNew() {
-        Pet pet = new Pet(42, 100, 100, 100, 100, LocalDateTime.now(), PetStatus.ACTIVE);
+        Pet pet = new Pet(42, 100, 100, 100, 100, now(), now(), ACTIVE);
         return petDao.save(pet);
     }
 }
