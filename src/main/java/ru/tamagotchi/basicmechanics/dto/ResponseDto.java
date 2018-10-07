@@ -27,4 +27,8 @@ public class ResponseDto<T> {
     public ResponseDto(ErrorDto error) {
         this.errors = Collections.singletonList(error);
     }
+
+    public ResponseDto(List<ErrorDto> errors) {
+        this.errors = errors;
+    }
 }

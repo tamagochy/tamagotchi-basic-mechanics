@@ -5,14 +5,18 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import ru.tamagotchi.basicmechanics.annotation.HandleCustomException;
+import ru.tamagotchi.basicmechanics.dto.ErrorDto;
+import ru.tamagotchi.basicmechanics.dto.ResponseDto;
 import ru.tamagotchi.basicmechanics.exception.handler.api.CustomExceptionHandler;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -57,5 +61,26 @@ public class ExceptionHandlerControllerAdvice extends ResponseEntityExceptionHan
             );
         }
         return handleException(exception, request);
+    }
+
+    @Override
+    @SuppressWarnings("NullableProblems")
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(
+            MethodArgumentNotValidException exception,
+            HttpHeaders headers,
+            HttpStatus status,
+            WebRequest request
+    ) {
+        List<ErrorDto> errors = new ArrayList<>();
+        exception.getBindingResult()
+                .getFieldErrors()
+                .forEach(fieldError -> errors.add(new ErrorDto(fieldError.getField(), fieldError.getCode())));
+        return handleExceptionInternal(
+                exception,
+                new ResponseDto<>(errors),
+                headers,
+                status,
+                request
+        );
     }
 }
