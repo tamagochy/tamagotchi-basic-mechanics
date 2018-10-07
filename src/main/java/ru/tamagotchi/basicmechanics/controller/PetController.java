@@ -2,6 +2,7 @@ package ru.tamagotchi.basicmechanics.controller;
 
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.tamagotchi.basicmechanics.dto.PetDto;
 import ru.tamagotchi.basicmechanics.dto.ResponseDto;
@@ -21,13 +22,38 @@ public class PetController {
     private final PetMapper mapper;
 
     @GetMapping
-    public ResponseDto<PetDto> myPet() {
-        return new ResponseDto<>(mapper.toDto(petService.getCurrentUserPet()));
+    public ResponseDto<PetDto> current() {
+        return new ResponseDto<>(mapper.toDto(petService.getCurrent()));
     }
 
-    @PostMapping
+    @PostMapping(value = "/create")
     @ResponseBody
+    @ResponseStatus(HttpStatus.CREATED)
     public ResponseDto<PetDto> create() {
-        return new ResponseDto<>(mapper.toDto(petService.createNew()));
+        return new ResponseDto<>(mapper.toDto(petService.create()));
+    }
+
+    @PutMapping(value = "/feed")
+    @ResponseBody
+    public ResponseDto<PetDto> feed() {
+        return new ResponseDto<>(mapper.toDto(petService.feed()));
+    }
+
+    @PutMapping(value = "/sleep")
+    @ResponseBody
+    public ResponseDto<PetDto> sleep() {
+        return new ResponseDto<>(mapper.toDto(petService.sleep()));
+    }
+
+    @PutMapping(value = "/treat")
+    @ResponseBody
+    public ResponseDto<PetDto> treat() {
+        return new ResponseDto<>(mapper.toDto(petService.treat()));
+    }
+
+    @PutMapping(value = "/play")
+    @ResponseBody
+    public ResponseDto<PetDto> play() {
+        return new ResponseDto<>(mapper.toDto(petService.play()));
     }
 }

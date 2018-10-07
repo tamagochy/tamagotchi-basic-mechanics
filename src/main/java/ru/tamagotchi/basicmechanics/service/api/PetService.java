@@ -7,7 +7,15 @@ import ru.tamagotchi.basicmechanics.domain.Pet;
  * 02.10.2018 18:26
  */
 public interface PetService {
-    Pet getCurrentUserPet();
+    Pet getCurrent();
 
-    Pet createNew();
+    Pet create();
+
+    Pet feed();
+
+    Pet sleep();
+
+    Pet treat();
+
+    Pet play();
 }

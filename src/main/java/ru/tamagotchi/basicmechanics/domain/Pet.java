@@ -1,7 +1,6 @@
 package ru.tamagotchi.basicmechanics.domain;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -14,6 +13,9 @@ import java.time.LocalDateTime;
 @Table(name = "PETS")
 @Data
 public class Pet {
+    public static final int INDEX_MAX_VALUE = 100;
+    public static final int INDEX_INCREMENT_VALUE = 25;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -61,5 +63,33 @@ public class Pet {
         this.createTime = createTime;
         this.lastAccessTime = lastAccessTime;
         this.status = status;
+    }
+
+    public void increaseHealth() {
+        this.health += INDEX_INCREMENT_VALUE;
+        if (this.health > INDEX_MAX_VALUE) {
+            this.health = INDEX_MAX_VALUE;
+        }
+    }
+
+    public void increaseHunger() {
+        this.hunger += INDEX_INCREMENT_VALUE;
+        if (this.hunger > INDEX_MAX_VALUE) {
+            this.hunger = INDEX_MAX_VALUE;
+        }
+    }
+
+    public void increaseRest() {
+        this.rest += INDEX_INCREMENT_VALUE;
+        if (this.rest > INDEX_MAX_VALUE) {
+            this.rest = INDEX_MAX_VALUE;
+        }
+    }
+
+    public void increaseMood() {
+        this.mood += INDEX_INCREMENT_VALUE;
+        if (this.mood > INDEX_MAX_VALUE) {
+            this.mood = INDEX_MAX_VALUE;
+        }
     }
 }

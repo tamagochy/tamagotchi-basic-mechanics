@@ -25,16 +25,4 @@ public class BasicMechanicsApplicationTests {
     @Test
     public void contextLoads() {
     }
-
-    @Test
-    public void testSearch() {
-        int ownerId = 42;
-        Pet pet1 = new Pet(ownerId, 100, 100, 100, 100, now(), now(), LEAVE);
-        Pet pet2 = new Pet(ownerId, 100, 100, 100, 100, now(), now(), ACTIVE);
-        petDao.save(pet1);
-        petDao.save(pet2);
-
-        List<Pet> pets = petDao.getAllByOwnerId(ownerId);
-        assertEquals(2, pets.size());
-    }
 }
