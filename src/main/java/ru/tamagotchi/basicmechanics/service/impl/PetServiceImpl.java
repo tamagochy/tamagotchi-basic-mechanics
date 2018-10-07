@@ -13,6 +13,7 @@ import ru.tamagotchi.basicmechanics.service.api.PetService;
 import ru.tamagotchi.basicmechanics.service.api.ScheduleService;
 
 import java.util.Arrays;
+import java.util.Random;
 
 import static java.time.LocalDateTime.now;
 import static ru.tamagotchi.basicmechanics.domain.Pet.INDICATOR_MAX_VALUE;
@@ -31,6 +32,8 @@ public class PetServiceImpl implements PetService {
     private final ScheduleService scheduleService;
     private final PetDao petDao;
     private final ActionDao actionDao;
+
+    private Random random = new Random();
 
     @Override
     public Pet getCurrent() {
@@ -63,6 +66,19 @@ public class PetServiceImpl implements PetService {
                 now(),
                 ACTIVE
         );
+
+        switch (random.nextInt(3)) {
+            case 0:
+                pet.decreaseHealth();
+                break;
+            case 1:
+                pet.decreaseHunger();
+                break;
+            case 2:
+                pet.decreaseMood();
+                break;
+        }
+
         return petDao.save(pet);
     }
 
