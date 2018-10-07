@@ -16,7 +16,8 @@ import lombok.NoArgsConstructor;
 @ApiModel("Version")
 public class VersionDto {
     @ApiModelProperty(
-            value = "Версия в формате &lt;version &gt;.&lt;git branch &gt;.&lt;commit hash&gt;.&lt;commints count&gt;"
+            value = "Версия в формате &lt;version &gt;.&lt;git branch &gt;.&lt;commit hash&gt;.&lt;commints count&gt;",
+            example = "1.0.0.master.0716af9.42"
     )
     private String version;
 }
