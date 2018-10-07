@@ -72,10 +72,7 @@ public class Pet {
     }
 
     public void increaseHealth() {
-        this.health += INDICATOR_INCREMENT_VALUE;
-        if (this.health > INDICATOR_MAX_VALUE) {
-            this.health = INDICATOR_MAX_VALUE;
-        }
+        this.health = INDICATOR_MAX_VALUE;
     }
 
     public void decreaseHealth() {
