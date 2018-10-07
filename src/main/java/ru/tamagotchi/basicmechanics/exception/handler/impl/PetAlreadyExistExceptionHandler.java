@@ -15,6 +15,6 @@ import ru.tamagotchi.basicmechanics.exception.handler.api.CustomExceptionHandler
 public class PetAlreadyExistExceptionHandler implements CustomExceptionHandler {
     @Override
     public ResponseDto handle(RuntimeException exception, WebRequest request) {
-        return ResponseDto.withSingleError(new ErrorDto("pet.alreadyExists"));
+        return new ResponseDto(new ErrorDto("pet.alreadyExists"));
     }
 }

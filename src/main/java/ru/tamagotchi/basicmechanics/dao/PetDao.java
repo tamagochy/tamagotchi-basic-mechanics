@@ -4,6 +4,7 @@ import org.springframework.data.repository.CrudRepository;
 import ru.tamagotchi.basicmechanics.domain.Pet;
 import ru.tamagotchi.basicmechanics.domain.PetStatus;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -12,7 +13,7 @@ import java.util.List;
  */
 
 public interface PetDao extends CrudRepository<Pet, Long> {
-    List<Pet> getAllByOwnerIdAndStatus(Integer ownerId, PetStatus status);
+    List<Pet> getAllByOwnerIdAndStatusIn(Integer ownerId, Collection<PetStatus> status);
 
     Long countAllByOwnerId(Integer ownerId);
 }

@@ -26,9 +26,6 @@ public class ScheduleItem {
     @Column(name = "IS_BEGINNING_OF_DAY", nullable = false)
     private boolean beginningOfDay;
 
-    @Column(name = "IS_END_OF_DAY", nullable = false)
-    private boolean endOfDay;
-
     @Column(name = "IS_DECREASE_HUNGER", nullable = false)
     private boolean decreaseHunger;
 

@@ -6,5 +6,6 @@ package ru.tamagotchi.basicmechanics.domain;
  */
 public enum PetStatus {
     ACTIVE,
-    LEAVE;
+    LEAVE,
+    SLEEP
 }

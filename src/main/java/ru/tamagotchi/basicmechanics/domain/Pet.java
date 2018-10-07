@@ -13,8 +13,9 @@ import java.time.LocalDateTime;
 @Table(name = "PETS")
 @Data
 public class Pet {
-    public static final int INDEX_MAX_VALUE = 100;
-    public static final int INDEX_INCREMENT_VALUE = 25;
+    public static final int INDICATOR_MAX_VALUE = 100;
+    public static final int INDICATOR_INCREMENT_VALUE = 25;
+    public static final int INDICATOR_CRITICAL_VALUE = 25;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -66,30 +67,50 @@ public class Pet {
     }
 
     public void increaseHealth() {
-        this.health += INDEX_INCREMENT_VALUE;
-        if (this.health > INDEX_MAX_VALUE) {
-            this.health = INDEX_MAX_VALUE;
+        this.health += INDICATOR_INCREMENT_VALUE;
+        if (this.health > INDICATOR_MAX_VALUE) {
+            this.health = INDICATOR_MAX_VALUE;
         }
+    }
+
+    public void decreaseHealth() {
+        this.health = INDICATOR_CRITICAL_VALUE;
     }
 
     public void increaseHunger() {
-        this.hunger += INDEX_INCREMENT_VALUE;
-        if (this.hunger > INDEX_MAX_VALUE) {
-            this.hunger = INDEX_MAX_VALUE;
+        this.hunger += INDICATOR_INCREMENT_VALUE;
+        if (this.hunger > INDICATOR_MAX_VALUE) {
+            this.hunger = INDICATOR_MAX_VALUE;
         }
+    }
+
+    public void decreaseHunger() {
+        this.hunger = INDICATOR_CRITICAL_VALUE;
     }
 
     public void increaseRest() {
-        this.rest += INDEX_INCREMENT_VALUE;
-        if (this.rest > INDEX_MAX_VALUE) {
-            this.rest = INDEX_MAX_VALUE;
-        }
+        this.rest = INDICATOR_MAX_VALUE;
+    }
+
+    public void decreaseRest() {
+        this.rest = INDICATOR_CRITICAL_VALUE;
     }
 
     public void increaseMood() {
-        this.mood += INDEX_INCREMENT_VALUE;
-        if (this.mood > INDEX_MAX_VALUE) {
-            this.mood = INDEX_MAX_VALUE;
+        this.mood += INDICATOR_INCREMENT_VALUE;
+        if (this.mood > INDICATOR_MAX_VALUE) {
+            this.mood = INDICATOR_MAX_VALUE;
         }
+    }
+
+    public void decreaseMood() {
+        this.mood = INDICATOR_CRITICAL_VALUE;
+    }
+
+    public boolean hasCriticalIndicator() {
+        return health <= INDICATOR_CRITICAL_VALUE ||
+                hunger <= INDICATOR_CRITICAL_VALUE ||
+                mood <= INDICATOR_CRITICAL_VALUE ||
+                rest <= INDICATOR_CRITICAL_VALUE;
     }
 }

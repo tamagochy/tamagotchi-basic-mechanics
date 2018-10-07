@@ -16,6 +16,6 @@ import ru.tamagotchi.basicmechanics.exception.handler.api.CustomExceptionHandler
 public class PetNotFoundExceptionHandler implements CustomExceptionHandler {
     @Override
     public ResponseDto handle(RuntimeException exception, WebRequest request) {
-        return ResponseDto.withSingleError(new ErrorDto("pet.notFound"));
+        return new ResponseDto(new ErrorDto("pet.notFound"));
     }
 }
