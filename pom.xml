@@ -125,6 +125,17 @@
                     </annotationProcessorPaths>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>pl.project13.maven</groupId>
+                <artifactId>git-commit-id-plugin</artifactId>
+                <configuration>
+                    <verbose>true</verbose>
+                    <generateGitPropertiesFile>true</generateGitPropertiesFile>
+                    <generateGitPropertiesFilename>
+                        ${project.build.outputDirectory}/version.properties
+                    </generateGitPropertiesFilename>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 </project>
