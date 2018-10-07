@@ -1,6 +1,7 @@
 package ru.tamagotchi.basicmechanics.dto;
 
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 /**
@@ -10,8 +11,17 @@ import lombok.Data;
 @Data
 @ApiModel("Pet")
 public class PetDto {
+    @ApiModelProperty(allowableValues = "range[25, 100]")
     private Integer health;
+
+    @ApiModelProperty(allowableValues = "range[25, 100]")
     private Integer hunger;
+
+    @ApiModelProperty(allowableValues = "range[25, 100]")
     private Integer rest;
+
+    @ApiModelProperty(allowableValues = "range[25, 100]")
     private Integer mood;
+
+    private boolean active;
 }
