@@ -11,6 +11,9 @@ spring:
     properties.hibernate.temp.use_jdbc_metadata_defaults: false
     properties.hibernate.connection.autocommit: true
     show-sql: true
+  jackson:
+    serialization:
+      WRITE_DATES_AS_TIMESTAMPS: false
 server:
   port: 8085
 logging:
