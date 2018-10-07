@@ -48,6 +48,7 @@ public class PetServiceImpl implements PetService {
         Pet pet = getCurrent();
         checkIndex("hunger", pet.getHunger());
         pet.increaseHunger();
+        pet.setLastAccessTime(now());
         return petDao.save(pet);
     }
 
@@ -56,6 +57,7 @@ public class PetServiceImpl implements PetService {
         Pet pet = getCurrent();
         checkIndex("rest", pet.getRest());
         pet.increaseRest();
+        pet.setLastAccessTime(now());
         return petDao.save(pet);
     }
 
@@ -64,6 +66,7 @@ public class PetServiceImpl implements PetService {
         Pet pet = getCurrent();
         checkIndex("health", pet.getHealth());
         pet.increaseHealth();
+        pet.setLastAccessTime(now());
         return petDao.save(pet);
     }
 
@@ -72,6 +75,7 @@ public class PetServiceImpl implements PetService {
         Pet pet = getCurrent();
         checkIndex("mood", pet.getMood());
         pet.increaseMood();
+        pet.setLastAccessTime(now());
         return petDao.save(pet);
     }
 
