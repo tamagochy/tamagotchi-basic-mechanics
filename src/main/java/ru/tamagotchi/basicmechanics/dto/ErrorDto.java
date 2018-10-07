@@ -1,8 +1,8 @@
 package ru.tamagotchi.basicmechanics.dto;
 
+import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 /**
  * Created by makar
@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
  */
 @Data
 @AllArgsConstructor
+@ApiModel(value = "Error")
 public class ErrorDto {
     private String attr;
     private String code;
