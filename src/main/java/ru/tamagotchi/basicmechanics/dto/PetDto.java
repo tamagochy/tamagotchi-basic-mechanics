@@ -11,6 +11,8 @@ import lombok.Data;
 @Data
 @ApiModel("Pet")
 public class PetDto {
+    private String name;
+
     @ApiModelProperty(allowableValues = "range[25, 100]")
     private Integer health;
 

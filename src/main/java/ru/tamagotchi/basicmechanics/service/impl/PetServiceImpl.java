@@ -41,7 +41,7 @@ public class PetServiceImpl implements PetService {
     }
 
     @Override
-    public Pet create() {
+    public Pet create(String name) {
         petDao.getAllByOwnerIdAndStatusIn(42, Arrays.asList(ACTIVE, SLEEP))
                 .stream()
                 .findAny()
@@ -49,6 +49,7 @@ public class PetServiceImpl implements PetService {
                     throw new PetAlreadyExistException();
                 });
         Pet pet = new Pet(
+                name,
                 42,
                 INDICATOR_MAX_VALUE,
                 INDICATOR_MAX_VALUE,

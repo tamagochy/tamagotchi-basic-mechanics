@@ -4,10 +4,13 @@ package ru.tamagotchi.basicmechanics.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import ru.tamagotchi.basicmechanics.dto.PetCreateRequest;
 import ru.tamagotchi.basicmechanics.dto.PetDto;
 import ru.tamagotchi.basicmechanics.dto.ResponseDto;
 import ru.tamagotchi.basicmechanics.mapper.PetMapper;
 import ru.tamagotchi.basicmechanics.service.api.PetService;
+
+import javax.validation.Valid;
 
 /**
  * Created by makar
@@ -29,8 +32,8 @@ public class PetController {
     @PostMapping(value = "/create")
     @ResponseBody
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseDto<PetDto> create() {
-        return new ResponseDto<>(mapper.toDto(petService.create()));
+    public ResponseDto<PetDto> create(@Valid @RequestBody PetCreateRequest request) {
+        return new ResponseDto<>(mapper.toDto(petService.create(request.getName())));
     }
 
     @PutMapping(value = "/feed")

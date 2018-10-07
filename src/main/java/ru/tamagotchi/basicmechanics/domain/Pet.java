@@ -21,6 +21,9 @@ public class Pet {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false, length = 100)
+    private String name;
+
     @Column(nullable = false)
     private Integer ownerId;
 
@@ -47,6 +50,7 @@ public class Pet {
     private PetStatus status;
 
     public Pet(
+            String name,
             Integer ownerId,
             Integer health,
             Integer hunger,
@@ -56,6 +60,7 @@ public class Pet {
             LocalDateTime lastAccessTime,
             PetStatus status
     ) {
+        this.name = name;
         this.ownerId = ownerId;
         this.health = health;
         this.hunger = hunger;

@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import ru.tamagotchi.basicmechanics.annotation.HandleCustomException;
@@ -42,7 +43,8 @@ public class ExceptionHandlerControllerAdvice extends ResponseEntityExceptionHan
         }
     }
 
-    @ExceptionHandler(value = RuntimeException.class)
+    @ExceptionHandler(RuntimeException.class)
+    @ResponseBody
     public ResponseEntity<Object> handle(RuntimeException exception, WebRequest request) throws Exception {
         CustomExceptionHandler handler = handlersMap.get(exception.getClass());
         if (handler != null) {

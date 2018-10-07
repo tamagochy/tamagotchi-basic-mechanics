@@ -9,7 +9,7 @@ import ru.tamagotchi.basicmechanics.domain.Pet;
 public interface PetService {
     Pet getCurrent();
 
-    Pet create();
+    Pet create(String name);
 
     Pet feed();
 
