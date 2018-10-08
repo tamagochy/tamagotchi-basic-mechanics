@@ -17,7 +17,7 @@ import java.time.LocalTime;
 @ApiModel("ScheduleItem")
 public class ScheduleItemDto {
     @JsonFormat(pattern = "HH:mm")
-    @ApiModelProperty(dataType = "string")
+    @ApiModelProperty(dataType = "java.lang.String")
     private LocalTime time;
 
     private String description;
