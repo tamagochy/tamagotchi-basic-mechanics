@@ -3,3 +3,5 @@ spring:
     url: jdbc:h2:mem:AZ;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
     username: sa
     password:
+jwt:
+  key: 'B2ABF96B2E47A757CC051D709993A89FB09019F9E8BE44EEB7B2BC43A4A19BEE'

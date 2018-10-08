@@ -11,7 +11,7 @@ import javax.validation.constraints.Size;
  * 07.10.2018 19:05
  */
 @Data
-@ApiModel("PetCreateReques")
+@ApiModel("PetCreateRequest")
 public class PetCreateRequestDto {
     @NotBlank
     @Size(max = 100)

@@ -9,6 +9,7 @@ import ru.tamagotchi.basicmechanics.domain.Action;
 import ru.tamagotchi.basicmechanics.domain.ActionCode;
 import ru.tamagotchi.basicmechanics.domain.Pet;
 import ru.tamagotchi.basicmechanics.exception.*;
+import ru.tamagotchi.basicmechanics.service.api.AuthService;
 import ru.tamagotchi.basicmechanics.service.api.PetService;
 import ru.tamagotchi.basicmechanics.service.api.ScheduleService;
 
@@ -30,6 +31,7 @@ import static ru.tamagotchi.basicmechanics.domain.PetStatus.SLEEP;
 public class PetServiceImpl implements PetService {
 
     private final ScheduleService scheduleService;
+    private final AuthService authService;
     private final PetDao petDao;
     private final ActionDao actionDao;
 
@@ -37,11 +39,11 @@ public class PetServiceImpl implements PetService {
 
     @Override
     public Pet getCurrent() {
-        Long totalPets = petDao.countAllByOwnerId(42);
+        Long totalPets = petDao.countAllByOwnerId(authService.getCurrentUserId());
         if (totalPets == 0) {
             throw new PetNotExistsException();
         }
-        return petDao.getAllByOwnerIdAndStatusIn(42, Arrays.asList(ACTIVE, SLEEP))
+        return petDao.getAllByOwnerIdAndStatusIn(authService.getCurrentUserId(), Arrays.asList(ACTIVE, SLEEP))
                 .stream()
                 .findFirst()
                 .orElseThrow(PetNotFoundException::new);
@@ -49,7 +51,7 @@ public class PetServiceImpl implements PetService {
 
     @Override
     public Pet create(String name) {
-        petDao.getAllByOwnerIdAndStatusIn(42, Arrays.asList(ACTIVE, SLEEP))
+        petDao.getAllByOwnerIdAndStatusIn(authService.getCurrentUserId(), Arrays.asList(ACTIVE, SLEEP))
                 .stream()
                 .findAny()
                 .ifPresent(pet -> {
@@ -57,7 +59,7 @@ public class PetServiceImpl implements PetService {
                 });
         Pet pet = new Pet(
                 name,
-                42,
+                authService.getCurrentUserId(),
                 INDICATOR_MAX_VALUE,
                 INDICATOR_MAX_VALUE,
                 INDICATOR_MAX_VALUE,
@@ -141,7 +143,6 @@ public class PetServiceImpl implements PetService {
             throw new PetNotFoundException();
         }
     }
-
 
     private void checkIndicator(String name, Integer value) {
         if (value == INDICATOR_MAX_VALUE) {
