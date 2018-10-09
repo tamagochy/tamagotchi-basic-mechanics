@@ -10,4 +10,4 @@ INSERT INTO ACTIONS(CODE, DESCRIPTION, VALUE) VALUES
   ('brush', 'Почесать питомца', 25),
   ('takePicture', 'Сфотографировать питомца', 50),
   ('playBall', 'Поиграть в мяч', 75),
-  ('playTicTacToe', 'Поиграть в мяч', 75);
+  ('playTicTacToe', 'Поиграть в крестики-нолики', 75);
