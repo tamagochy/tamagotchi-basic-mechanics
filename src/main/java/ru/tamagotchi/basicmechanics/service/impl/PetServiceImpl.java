@@ -18,8 +18,7 @@ import java.util.Random;
 
 import static java.time.LocalDateTime.now;
 import static ru.tamagotchi.basicmechanics.domain.Pet.INDICATOR_MAX_VALUE;
-import static ru.tamagotchi.basicmechanics.domain.PetStatus.ACTIVE;
-import static ru.tamagotchi.basicmechanics.domain.PetStatus.SLEEP;
+import static ru.tamagotchi.basicmechanics.domain.PetStatus.*;
 
 /**
  * Created by makar
@@ -43,10 +42,11 @@ public class PetServiceImpl implements PetService {
         if (totalPets == 0) {
             throw new PetNotExistsException();
         }
-        return petDao.getAllByOwnerIdAndStatusIn(authService.getCurrentUserId(), Arrays.asList(ACTIVE, SLEEP))
+        Pet pet = petDao.getAllByOwnerIdAndStatusIn(authService.getCurrentUserId(), Arrays.asList(ACTIVE, SLEEP))
                 .stream()
                 .findFirst()
                 .orElseThrow(PetNotFoundException::new);
+        return applySchedule(pet);
     }
 
     @Override
@@ -87,8 +87,7 @@ public class PetServiceImpl implements PetService {
     @Override
     public Pet feed() {
         Pet pet = getCurrent();
-        checkPetStatus(pet);
-        applySchedule(pet);
+        assertNotSleep(pet);
         checkIndicator("hunger", pet.getHunger());
         pet.increaseHunger();
         pet.setLastAccessTime(now());
@@ -98,8 +97,7 @@ public class PetServiceImpl implements PetService {
     @Override
     public Pet sleep() {
         Pet pet = getCurrent();
-        checkPetStatus(pet);
-        applySchedule(pet);
+        assertNotSleep(pet);
         checkIndicator("rest", pet.getRest());
         pet.increaseRest();
         pet.setLastAccessTime(now());
@@ -110,8 +108,7 @@ public class PetServiceImpl implements PetService {
     @Override
     public Pet treat() {
         Pet pet = getCurrent();
-        checkPetStatus(pet);
-        applySchedule(pet);
+        assertNotSleep(pet);
         checkIndicator("health", pet.getHealth());
         pet.increaseHealth();
         pet.setLastAccessTime(now());
@@ -122,29 +119,34 @@ public class PetServiceImpl implements PetService {
     public Pet play(ActionCode code) {
         Action action = actionDao.getByCode(code);
         Pet pet = getCurrent();
-        checkPetStatus(pet);
-        applySchedule(pet);
+        assertNotSleep(pet);
         checkIndicator("mood", pet.getMood());
         pet.increaseMood(action.getValue());
         pet.setLastAccessTime(now());
         return petDao.save(pet);
     }
 
-    private void checkPetStatus(Pet pet) {
+    private void assertNotSleep(Pet pet) {
         if (pet.getStatus() == SLEEP) {
             throw new PetNotAvailableException();
         }
     }
 
-    private void applySchedule(Pet pet) {
-        scheduleService.applySchedule(pet, now());
-        if (pet.getStatus() != ACTIVE) {
+    private Pet applySchedule(Pet pet) {
+        boolean changed = scheduleService.applySchedule(pet, now());
+        if (changed) {
+            log.debug("pet updated after applying schedule: {}", pet);
+            pet.setLastAccessTime(now());
             petDao.save(pet);
+        }
+        if (pet.getStatus() == LEAVE) {
             throw new PetNotFoundException();
         }
+        return pet;
     }
 
     private void checkIndicator(String name, Integer value) {
+        log.debug("check indicator '{}', current value = {}", name, value);
         if (value == INDICATOR_MAX_VALUE) {
             throw new IndicatorFullException(name);
         }

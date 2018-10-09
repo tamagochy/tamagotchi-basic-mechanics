@@ -13,5 +13,5 @@ import java.util.List;
 public interface ScheduleService {
     List<ScheduleItem> getSchedule();
 
-    void applySchedule(Pet pet, LocalDateTime currentTime);
+    boolean applySchedule(Pet pet, LocalDateTime currentTime);
 }
