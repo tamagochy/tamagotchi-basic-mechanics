@@ -16,6 +16,13 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
+    <scm>
+        <connection>scm:git:ssh://git@github.com/tamagochy/tamagotchi-basic-mechanics.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com/tamagochy/tamagotchi-basic-mechanics.git</developerConnection>
+        <url>https://github.com/tamagochy/tamagotchi-basic-mechanics.git</url>
+        <tag>HEAD</tag>
+    </scm>
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -156,6 +163,10 @@
                         ${project.build.outputDirectory}/version.properties
                     </generateGitPropertiesFilename>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
             </plugin>
         </plugins>
     </build>
