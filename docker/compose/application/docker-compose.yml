@@ -1,0 +1,30 @@
+version: '3'
+services:
+  app:
+    image: makar1031/tamagochi-basic-mechanics:1.0.0
+    ports:
+    - "8085:8085"
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      JWT_KEY: B2ABF96B2E47A757CC051D709993A89FB09019F9E8BE44EEB7B2BC43A4A19BEE
+    depends_on:
+    - db
+  db:
+    image: postgres:10.5
+    restart: always
+    ports:
+    - "5432:5432"
+    environment:
+      POSTGRES_DB: tamagochi-basic-mechanics
+      POSTGRES_PASSWORD: postgres
+    volumes:
+    - "postgres-data:/var/lib/postgresql/data"
+  adminer:
+    image: adminer:4
+    restart: always
+    ports:
+    - "9999:8080"
+volumes:
+  postgres-data:
+    driver: local
