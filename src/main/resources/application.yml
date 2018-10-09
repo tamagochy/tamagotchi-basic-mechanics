@@ -2,9 +2,9 @@ spring:
   application:
     name: tamagochi-basicmechanics
   datasource:
-    url: jdbc:postgresql://192.168.99.100:5432/tamagochi-basic-mechanics
-    username: postgres
-    password: postgres
+    url: jdbc:postgresql://${db.host}:${db.port}/tamagochi-basic-mechanics
+    username: ${db.username:postgres}
+    password: ${db.username:postgres}
   jpa:
     hibernate:
       ddl-auto: validate
@@ -20,4 +20,4 @@ logging:
   level:
     ru.tamagotchi: DEBUG
 jwt:
-  key: 'B2ABF96B2E47A757CC051D709993A89FB09019F9E8BE44EEB7B2BC43A4A19BEE'
+  key: ${jwt.key}
