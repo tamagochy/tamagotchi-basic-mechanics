@@ -1,7 +1,7 @@
 version: '3'
 services:
   app:
-    image: makar1031/tamagochi-basic-mechanics:1.0.0
+    image: makar1031/tamagochi-basic-mechanics:1.0.1
     ports:
     - "8085:8085"
     environment:
