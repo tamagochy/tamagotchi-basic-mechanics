@@ -57,18 +57,7 @@ public class PetServiceImpl implements PetService {
                 .ifPresent(pet -> {
                     throw new PetAlreadyExistException();
                 });
-        Pet pet = new Pet(
-                name,
-                authService.getCurrentUserId(),
-                INDICATOR_MAX_VALUE,
-                INDICATOR_MAX_VALUE,
-                INDICATOR_MAX_VALUE,
-                INDICATOR_MAX_VALUE,
-                now(),
-                now(),
-                ACTIVE
-        );
-
+        Pet pet = new Pet(name, authService.getCurrentUserId(), now());
         switch (random.nextInt(3)) {
             case 0:
                 pet.decreaseHealth();
@@ -90,7 +79,6 @@ public class PetServiceImpl implements PetService {
         assertNotSleep(pet);
         checkIndicator("hunger", pet.getHunger());
         pet.increaseHunger();
-        pet.setLastAccessTime(now());
         return petDao.save(pet);
     }
 
@@ -100,7 +88,6 @@ public class PetServiceImpl implements PetService {
         assertNotSleep(pet);
         checkIndicator("rest", pet.getRest());
         pet.increaseRest();
-        pet.setLastAccessTime(now());
         pet.setStatus(SLEEP);
         return petDao.save(pet);
     }
@@ -111,7 +98,6 @@ public class PetServiceImpl implements PetService {
         assertNotSleep(pet);
         checkIndicator("health", pet.getHealth());
         pet.increaseHealth();
-        pet.setLastAccessTime(now());
         return petDao.save(pet);
     }
 
@@ -122,7 +108,6 @@ public class PetServiceImpl implements PetService {
         assertNotSleep(pet);
         checkIndicator("mood", pet.getMood());
         pet.increaseMood(action.getValue());
-        pet.setLastAccessTime(now());
         return petDao.save(pet);
     }
 
@@ -136,7 +121,7 @@ public class PetServiceImpl implements PetService {
         boolean changed = scheduleService.applySchedule(pet, now());
         if (changed) {
             log.debug("pet updated after applying schedule: {}", pet);
-            pet.setLastAccessTime(now());
+            pet.setLastScheduleApplyTime(now());
             petDao.save(pet);
         }
         if (pet.getStatus() == LEAVE) {

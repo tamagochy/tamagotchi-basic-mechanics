@@ -16,6 +16,7 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.Random;
 
+import static java.time.temporal.ChronoUnit.DAYS;
 import static java.util.Collections.unmodifiableList;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.StreamSupport.stream;
@@ -40,27 +41,43 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     @Override
-    public boolean applySchedule(Pet pet, LocalDateTime currentTime) {
+    public boolean applySchedule(Pet pet, LocalDateTime currentDateTime) {
         log.debug("try to apply schedule to pet {}", pet);
         if (pet == null) {
             return false;
         }
 
-        LocalDateTime lastAccessDateTime = pet.getLastAccessTime();
-
-        if (!lastAccessDateTime.toLocalDate().equals(currentTime.toLocalDate())) {
-            lastAccessDateTime = LocalDateTime.now().withHour(0).withMinute(0).withSecond(0).withNano(0);
-            if (pet.hasCriticalIndicator()) {
-                log.debug("pet leave");
-                pet.setStatus(PetStatus.LEAVE);
-                return true;
-            }
+        if (DAYS.between(pet.getLastHealthIncreaseTime(), currentDateTime) >= 1 && pet.hasCriticalHealth()) {
+            log.debug("pet leave because health has critical value");
+            pet.leave();
+            return true;
         }
-        log.debug("search events for pet");
-        LocalTime lastAccessTime = lastAccessDateTime.toLocalTime();
+        if (DAYS.between(pet.getLastHungerIncreaseTime(), currentDateTime) >= 1 && pet.hasCriticalHunger()) {
+            log.debug("pet leave because hunger has critical value");
+            pet.leave();
+            return true;
+        }
+        if (DAYS.between(pet.getLastRestIncreaseTime(), currentDateTime) >= 1 && pet.hasCriticalRest()) {
+            log.debug("pet leave because rest has critical value");
+            pet.leave();
+            return true;
+        }
+        if (DAYS.between(pet.getLastMoodIncreaseTime(), currentDateTime) >= 1 && pet.hasCriticalMood()) {
+            log.debug("pet leave because mood has critical value");
+            pet.leave();
+            return true;
+        }
+
+        LocalDateTime lastScheduleApplyDateTime = pet.getLastScheduleApplyTime();
+        if (!lastScheduleApplyDateTime.toLocalDate().equals(currentDateTime.toLocalDate())) {
+            lastScheduleApplyDateTime = LocalDateTime.now().withHour(0).withMinute(0).withSecond(0).withNano(0);
+        }
+        log.debug("searching events for pet...");
+        LocalTime lastScheduleApplyTime = lastScheduleApplyDateTime.toLocalTime();
+        LocalTime currentTime = currentDateTime.toLocalTime();
         List<ScheduleItem> events = schedule.stream()
-                .filter(e -> e.getTime().isAfter(lastAccessTime))
-                .filter(e -> e.getTime().isBefore(currentTime.toLocalTime()))
+                .filter(e -> e.getTime().isAfter(lastScheduleApplyTime))
+                .filter(e -> e.getTime().isBefore(currentTime))
                 .collect(toList());
         if (events.isEmpty()) {
             log.debug("events not found");

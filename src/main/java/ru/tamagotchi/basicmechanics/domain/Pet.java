@@ -1,9 +1,12 @@
 package ru.tamagotchi.basicmechanics.domain;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+
+import static java.time.LocalDateTime.now;
 
 /**
  * Created by makar
@@ -40,43 +43,54 @@ public class Pet {
     private Integer mood;
 
     @Column(nullable = false)
+    private LocalDateTime lastHealthIncreaseTime;
+
+    @Column(nullable = false)
+    private LocalDateTime lastHungerIncreaseTime;
+
+    @Column(nullable = false)
+    private LocalDateTime lastRestIncreaseTime;
+
+    @Column(nullable = false)
+    private LocalDateTime lastMoodIncreaseTime;
+
+    @Column(nullable = false)
     private LocalDateTime createTime;
 
     @Column(nullable = false)
-    private LocalDateTime lastAccessTime;
+    private LocalDateTime lastScheduleApplyTime;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private PetStatus status;
 
-    public Pet(
-            String name,
-            Integer ownerId,
-            Integer health,
-            Integer hunger,
-            Integer rest,
-            Integer mood,
-            LocalDateTime createTime,
-            LocalDateTime lastAccessTime,
-            PetStatus status
-    ) {
+    public Pet(String name, Integer ownerId, LocalDateTime createTime) {
         this.name = name;
         this.ownerId = ownerId;
-        this.health = health;
-        this.hunger = hunger;
-        this.rest = rest;
-        this.mood = mood;
+        this.health = INDICATOR_MAX_VALUE;
+        this.hunger = INDICATOR_MAX_VALUE;
+        this.rest = INDICATOR_MAX_VALUE;
+        this.mood = INDICATOR_MAX_VALUE;
         this.createTime = createTime;
-        this.lastAccessTime = lastAccessTime;
-        this.status = status;
+        this.lastHealthIncreaseTime = createTime;
+        this.lastHungerIncreaseTime = createTime;
+        this.lastRestIncreaseTime = createTime;
+        this.lastMoodIncreaseTime = createTime;
+        this.lastScheduleApplyTime = createTime;
+        this.status = PetStatus.ACTIVE;
     }
 
     public void increaseHealth() {
         this.health = INDICATOR_MAX_VALUE;
+        lastHealthIncreaseTime = now();
     }
 
     public void decreaseHealth() {
         this.health = INDICATOR_CRITICAL_VALUE;
+    }
+
+    public boolean hasCriticalHealth() {
+        return health <= INDICATOR_CRITICAL_VALUE;
     }
 
     public void increaseHunger() {
@@ -84,18 +98,28 @@ public class Pet {
         if (this.hunger > INDICATOR_MAX_VALUE) {
             this.hunger = INDICATOR_MAX_VALUE;
         }
+        lastHungerIncreaseTime = now();
     }
 
     public void decreaseHunger() {
         this.hunger = INDICATOR_CRITICAL_VALUE;
     }
 
+    public boolean hasCriticalHunger() {
+        return hunger <= INDICATOR_CRITICAL_VALUE;
+    }
+
     public void increaseRest() {
         this.rest = INDICATOR_MAX_VALUE;
+        lastRestIncreaseTime = now();
     }
 
     public void decreaseRest() {
         this.rest = INDICATOR_CRITICAL_VALUE;
+    }
+
+    public boolean hasCriticalRest() {
+        return rest <= INDICATOR_CRITICAL_VALUE;
     }
 
     public void increaseMood(Integer value) {
@@ -103,16 +127,18 @@ public class Pet {
         if (this.mood > INDICATOR_MAX_VALUE) {
             this.mood = INDICATOR_MAX_VALUE;
         }
+        lastMoodIncreaseTime = now();
     }
 
     public void decreaseMood() {
         this.mood = INDICATOR_CRITICAL_VALUE;
     }
 
-    public boolean hasCriticalIndicator() {
-        return health <= INDICATOR_CRITICAL_VALUE ||
-                hunger <= INDICATOR_CRITICAL_VALUE ||
-                mood <= INDICATOR_CRITICAL_VALUE ||
-                rest <= INDICATOR_CRITICAL_VALUE;
+    public boolean hasCriticalMood() {
+        return mood <= INDICATOR_CRITICAL_VALUE;
+    }
+
+    public void leave() {
+        this.status = PetStatus.LEAVE;
     }
 }
