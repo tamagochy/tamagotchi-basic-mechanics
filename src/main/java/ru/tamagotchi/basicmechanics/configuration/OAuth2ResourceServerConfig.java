@@ -38,6 +38,7 @@ public class OAuth2ResourceServerConfig extends ResourceServerConfigurerAdapter 
         http.exceptionHandling().authenticationEntryPoint(exceptionHandler);
         // @formatter:off
         http.formLogin().disable()
+            .cors().and()
             .csrf().disable()
             .authorizeRequests()
                 .antMatchers(ALLOWED_PATHS)
