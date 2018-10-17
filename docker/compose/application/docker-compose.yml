@@ -8,6 +8,7 @@ services:
       DB_HOST: db
       DB_PORT: 5432
       JWT_KEY: B2ABF96B2E47A757CC051D709993A89FB09019F9E8BE44EEB7B2BC43A4A19BEE
+      TZ: Europe/Moscow
     depends_on:
     - db
   db:
