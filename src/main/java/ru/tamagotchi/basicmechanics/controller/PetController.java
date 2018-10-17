@@ -4,6 +4,7 @@ package ru.tamagotchi.basicmechanics.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import ru.tamagotchi.basicmechanics.domain.ActionCode;
 import ru.tamagotchi.basicmechanics.dto.PetCreateRequestDto;
 import ru.tamagotchi.basicmechanics.dto.PetDto;
 import ru.tamagotchi.basicmechanics.dto.PlayRequestDto;
@@ -58,6 +59,6 @@ public class PetController {
     @PutMapping(value = "/play")
     @ResponseBody
     public ResponseDto<PetDto> play(@Valid @RequestBody PlayRequestDto request) {
-        return new ResponseDto<>(mapper.toDto(petService.play(request.getAction())));
+        return new ResponseDto<>(mapper.toDto(petService.play(ActionCode.valueOf(request.getAction()))));
     }
 }

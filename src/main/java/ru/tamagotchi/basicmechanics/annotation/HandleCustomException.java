@@ -11,7 +11,7 @@ import java.lang.annotation.Target;
  * Created by makar
  * 02.10.2018 22:18
  */
-@Target({ElementType.TYPE})
+@Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Component
 public @interface HandleCustomException {

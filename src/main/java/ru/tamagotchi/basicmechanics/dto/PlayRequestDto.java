@@ -1,10 +1,9 @@
 package ru.tamagotchi.basicmechanics.dto;
 
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import ru.tamagotchi.basicmechanics.domain.ActionCode;
-
-import javax.validation.constraints.NotNull;
+import ru.tamagotchi.basicmechanics.validation.annotation.constraint.ValidActionCode;
 
 /**
  * Created by makar
@@ -13,6 +12,7 @@ import javax.validation.constraints.NotNull;
 @Data
 @ApiModel("PlayRequest")
 public class PlayRequestDto {
-    @NotNull
-    private ActionCode action;
+    @ValidActionCode
+    @ApiModelProperty(dataType = "ru.tamagotchi.basicmechanics.domain.ActionCode")
+    private String action;
 }
