@@ -1,6 +1,7 @@
 package ru.tamagotchi.basicmechanics.domain;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 import java.time.LocalTime;
@@ -12,6 +13,7 @@ import java.time.LocalTime;
 @Entity
 @Table(name = "SCHEDULE_ITEMS")
 @Data
+@EqualsAndHashCode(of = "time")
 public class ScheduleItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

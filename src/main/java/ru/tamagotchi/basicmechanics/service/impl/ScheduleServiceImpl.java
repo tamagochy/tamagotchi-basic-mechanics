@@ -13,13 +13,13 @@ import ru.tamagotchi.basicmechanics.service.api.ScheduleService;
 import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 import static java.time.temporal.ChronoUnit.DAYS;
 import static java.util.Collections.unmodifiableList;
-import static java.util.stream.Collectors.toList;
-import static java.util.stream.StreamSupport.stream;
 
 /**
  * Created by makar
@@ -37,7 +37,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @PostConstruct
     public void init() {
-        schedule = unmodifiableList(stream(dao.findAll().spliterator(), false).collect(toList()));
+        schedule = unmodifiableList(dao.findAll());
     }
 
     @Override
@@ -68,17 +68,30 @@ public class ScheduleServiceImpl implements ScheduleService {
             return true;
         }
 
-        LocalDateTime lastScheduleApplyDateTime = pet.getLastScheduleApplyTime();
-        if (!lastScheduleApplyDateTime.toLocalDate().equals(currentDateTime.toLocalDate())) {
-            lastScheduleApplyDateTime = LocalDateTime.now().withHour(0).withMinute(0).withSecond(0).withNano(0);
-        }
         log.debug("searching events for pet...");
+        Set<ScheduleItem> events = new LinkedHashSet<>();
+
+        LocalDateTime lastScheduleApplyDateTime = pet.getLastScheduleApplyTime();
         LocalTime lastScheduleApplyTime = lastScheduleApplyDateTime.toLocalTime();
         LocalTime currentTime = currentDateTime.toLocalTime();
-        List<ScheduleItem> events = schedule.stream()
-                .filter(e -> e.getTime().isAfter(lastScheduleApplyTime))
-                .filter(e -> e.getTime().isBefore(currentTime))
-                .collect(toList());
+        if (lastScheduleApplyDateTime.toLocalDate().equals(currentDateTime.toLocalDate())) {
+            schedule.stream()
+                    .filter(e -> e.getTime().isAfter(lastScheduleApplyTime))
+                    .filter(e -> e.getTime().isBefore(currentTime))
+                    .forEach(events::add);
+        } else {
+            LocalTime startOfDay = LocalTime.of(0, 0);
+            LocalTime endOfDay = LocalTime.of(23, 59);
+            schedule.stream()
+                    .filter(e -> e.getTime().isAfter(lastScheduleApplyTime))
+                    .filter(e -> e.getTime().isBefore(endOfDay))
+                    .forEach(events::add);
+            schedule.stream()
+                    .filter(e -> e.getTime().isAfter(startOfDay))
+                    .filter(e -> e.getTime().isBefore(currentTime))
+                    .forEach(events::add);
+        }
+
         if (events.isEmpty()) {
             log.debug("events not found");
             return false;
