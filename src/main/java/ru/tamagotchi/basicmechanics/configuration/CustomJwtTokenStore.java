@@ -21,14 +21,22 @@ public class CustomJwtTokenStore extends JwtTokenStore {
     public OAuth2Authentication readAuthentication(OAuth2AccessToken token) {
         OAuth2Authentication oAuth2Authentication = super.readAuthentication(token);
         Map<String, Object> information = token.getAdditionalInformation();
-        checkUserIdClaim(information);
+        checkExpirationDate(token);
+        checkAdditionalClaims(information);
         oAuth2Authentication.setDetails(information);
         return oAuth2Authentication;
     }
 
-    private void checkUserIdClaim(Map<String, Object> information) {
+    private void checkExpirationDate(OAuth2AccessToken token) {
+        if (token.getExpiration() == null) {
+            throw new InvalidTokenException("invalid token");
+        }
+    }
+
+    private void checkAdditionalClaims(Map<String, Object> information) {
         Object userId = information.get("user_id");
-        if (!(userId instanceof Integer)) {
+        Object nbf = information.get("nbf");
+        if (!(userId instanceof Integer) || !(nbf instanceof Integer)) {
             throw new InvalidTokenException("invalid token");
         }
     }
