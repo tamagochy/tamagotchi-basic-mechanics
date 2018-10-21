@@ -47,22 +47,22 @@ public class ScheduleServiceImpl implements ScheduleService {
             return false;
         }
 
-        if (DAYS.between(pet.getLastHealthIncreaseTime(), currentDateTime) >= 1 && pet.hasCriticalHealth()) {
+        if (DAYS.between(pet.getLastHealthIncreaseTime(), currentDateTime) >= 1) {
             log.debug("pet leave because health has critical value");
             pet.leave();
             return true;
         }
-        if (DAYS.between(pet.getLastHungerIncreaseTime(), currentDateTime) >= 1 && pet.hasCriticalHunger()) {
+        if (DAYS.between(pet.getLastHungerIncreaseTime(), currentDateTime) >= 1) {
             log.debug("pet leave because hunger has critical value");
             pet.leave();
             return true;
         }
-        if (DAYS.between(pet.getLastRestIncreaseTime(), currentDateTime) >= 1 && pet.hasCriticalRest()) {
+        if (DAYS.between(pet.getLastRestIncreaseTime(), currentDateTime) >= 1) {
             log.debug("pet leave because rest has critical value");
             pet.leave();
             return true;
         }
-        if (DAYS.between(pet.getLastMoodIncreaseTime(), currentDateTime) >= 1 && pet.hasCriticalMood()) {
+        if (DAYS.between(pet.getLastMoodIncreaseTime(), currentDateTime) >= 1) {
             log.debug("pet leave because mood has critical value");
             pet.leave();
             return true;

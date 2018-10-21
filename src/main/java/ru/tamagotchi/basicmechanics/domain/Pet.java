@@ -1,7 +1,6 @@
 package ru.tamagotchi.basicmechanics.domain;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -89,10 +88,6 @@ public class Pet {
         this.health = INDICATOR_CRITICAL_VALUE;
     }
 
-    public boolean hasCriticalHealth() {
-        return health <= INDICATOR_CRITICAL_VALUE;
-    }
-
     public void increaseHunger() {
         this.hunger += INDICATOR_INCREMENT_VALUE;
         if (this.hunger > INDICATOR_MAX_VALUE) {
@@ -105,10 +100,6 @@ public class Pet {
         this.hunger = INDICATOR_CRITICAL_VALUE;
     }
 
-    public boolean hasCriticalHunger() {
-        return hunger <= INDICATOR_CRITICAL_VALUE;
-    }
-
     public void increaseRest() {
         this.rest = INDICATOR_MAX_VALUE;
         lastRestIncreaseTime = now();
@@ -116,10 +107,6 @@ public class Pet {
 
     public void decreaseRest() {
         this.rest = INDICATOR_CRITICAL_VALUE;
-    }
-
-    public boolean hasCriticalRest() {
-        return rest <= INDICATOR_CRITICAL_VALUE;
     }
 
     public void increaseMood(Integer value) {
@@ -132,10 +119,6 @@ public class Pet {
 
     public void decreaseMood() {
         this.mood = INDICATOR_CRITICAL_VALUE;
-    }
-
-    public boolean hasCriticalMood() {
-        return mood <= INDICATOR_CRITICAL_VALUE;
     }
 
     public void leave() {
