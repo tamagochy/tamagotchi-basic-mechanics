@@ -4,7 +4,7 @@
 
     <groupId>ru.tamagotchi</groupId>
     <artifactId>basic-mechanics</artifactId>
-    <version>1.0.3-SNAPSHOT</version>
+    <version>1.0.3</version>
     <packaging>jar</packaging>
     <name>basic-mechanics</name>
 
@@ -19,7 +19,7 @@
         <connection>scm:git:ssh://git@github.com/tamagochy/tamagotchi-basic-mechanics.git</connection>
         <developerConnection>scm:git:ssh://git@github.com/tamagochy/tamagotchi-basic-mechanics.git</developerConnection>
         <url>https://github.com/tamagochy/tamagotchi-basic-mechanics.git</url>
-        <tag>HEAD</tag>
+        <tag>basic-mechanics-1.0.3</tag>
     </scm>
 
     <properties>
