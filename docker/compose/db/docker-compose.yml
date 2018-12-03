@@ -4,9 +4,9 @@ services:
     image: postgres:10.5
     restart: always
     ports:
-    - "5432:5432"
+    - 5432:5432
     environment:
-      POSTGRES_DB: tamagochi-basic-mechanics
+      POSTGRES_DB: tamagotchi-basic-mechanics
       POSTGRES_PASSWORD: postgres
     volumes:
     - "postgres-data:/var/lib/postgresql/data"
@@ -14,7 +14,7 @@ services:
     image: adminer:4
     restart: always
     ports:
-    - "9999:8080"
+    - 9999:8080
 volumes:
   postgres-data:
     driver: local
