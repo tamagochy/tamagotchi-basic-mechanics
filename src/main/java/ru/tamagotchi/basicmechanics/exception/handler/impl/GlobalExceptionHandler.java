@@ -83,7 +83,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @Override
-    @SuppressWarnings("NullableProblems")
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
             MethodArgumentNotValidException exception,
             HttpHeaders headers,
@@ -104,7 +103,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @Override
-    @SuppressWarnings("NullableProblems")
     protected ResponseEntity<Object> handleNoHandlerFoundException(
             NoHandlerFoundException exception,
             HttpHeaders headers,
@@ -116,7 +114,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @Override
-    @SuppressWarnings("NullableProblems")
     protected ResponseEntity<Object> handleHttpMessageNotReadable(
             HttpMessageNotReadableException exception,
             HttpHeaders headers,
@@ -128,7 +125,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @Override
-    @SuppressWarnings("NullableProblems")
     protected ResponseEntity<Object> handleHttpMessageNotWritable(
             HttpMessageNotWritableException exception,
             HttpHeaders headers,
