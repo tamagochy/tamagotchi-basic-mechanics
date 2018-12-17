@@ -1,6 +1,5 @@
 package ru.tamagotchi.basicmechanics.service.impl;
 
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -17,6 +16,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static java.time.temporal.ChronoUnit.DAYS;
 import static java.util.Collections.unmodifiableList;
@@ -31,13 +31,17 @@ import static java.util.Collections.unmodifiableList;
 public class ScheduleServiceImpl implements ScheduleService {
     private final ScheduleItemDao dao;
 
-    @Getter
     private List<ScheduleItem> schedule;
     private Random random = new Random();
 
     @PostConstruct
     public void init() {
         schedule = unmodifiableList(dao.findAll());
+    }
+
+    @Override
+    public List<ScheduleItem> getSchedule() {
+        return schedule.stream().filter(scheduleItem -> !scheduleItem.isDecreaseMood()).collect(Collectors.toList());
     }
 
     @Override
