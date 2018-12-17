@@ -16,8 +16,7 @@ import static java.time.LocalDateTime.now;
 @Data
 public class Pet {
     public static final int INDICATOR_MAX_VALUE = 100;
-    public static final int INDICATOR_INCREMENT_VALUE = 25;
-    public static final int INDICATOR_CRITICAL_VALUE = 25;
+    public static final int INDICATOR_CRITICAL_VALUE = 10;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -83,49 +82,61 @@ public class Pet {
         this.status = PetStatus.ACTIVE;
     }
 
-    public void increaseHealth() {
-        this.health = INDICATOR_MAX_VALUE;
+    public void increaseHealth(int value) {
+        health += value;
+        if (health > INDICATOR_MAX_VALUE) {
+            health = INDICATOR_MAX_VALUE;
+        }
         lastHealthIncreaseTime = now();
     }
 
-    public void decreaseHealth() {
-        this.health = INDICATOR_CRITICAL_VALUE;
+    public void decreaseHealth(int value) {
+        health -= value;
+        if (health < INDICATOR_CRITICAL_VALUE) {
+            health = INDICATOR_CRITICAL_VALUE;
+        }
     }
 
-    public void increaseHunger() {
-        this.hunger += INDICATOR_INCREMENT_VALUE;
-        if (this.hunger > INDICATOR_MAX_VALUE) {
-            this.hunger = INDICATOR_MAX_VALUE;
+    public void increaseHunger(int value) {
+        hunger += value;
+        if (hunger > INDICATOR_MAX_VALUE) {
+            hunger = INDICATOR_MAX_VALUE;
         }
         lastHungerIncreaseTime = now();
     }
 
     public void decreaseHunger() {
-        this.hunger = INDICATOR_CRITICAL_VALUE;
+        hunger = INDICATOR_CRITICAL_VALUE;
     }
 
     public void increaseRest() {
-        this.rest = INDICATOR_MAX_VALUE;
+        rest = INDICATOR_MAX_VALUE;
         lastRestIncreaseTime = now();
     }
 
     public void decreaseRest() {
-        this.rest = INDICATOR_CRITICAL_VALUE;
+        rest = INDICATOR_CRITICAL_VALUE;
     }
 
     public void increaseMood(Integer value) {
-        this.mood += value;
-        if (this.mood > INDICATOR_MAX_VALUE) {
-            this.mood = INDICATOR_MAX_VALUE;
+        mood += value;
+        if (mood > INDICATOR_MAX_VALUE) {
+            mood = INDICATOR_MAX_VALUE;
         }
         lastMoodIncreaseTime = now();
     }
 
     public void decreaseMood() {
-        this.mood = INDICATOR_CRITICAL_VALUE;
+        mood = INDICATOR_CRITICAL_VALUE;
+    }
+
+    public void decreaseIndicator(Indicator indicator, int value) {
+        if (indicator.getCode() == IndicatorCode.health) {
+            decreaseHealth(value);
+        }
     }
 
     public void leave() {
-        this.status = PetStatus.LEAVE;
+        status = PetStatus.LEAVE;
     }
 }

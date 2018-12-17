@@ -15,5 +15,5 @@ import java.util.List;
 public interface ScheduleMapper {
     ScheduleItemDto toDto(ScheduleItem item);
 
-    List<ScheduleItemDto> toDtos(List<ScheduleItem> items);
+    List<ScheduleItemDto> toDtoList(List<ScheduleItem> items);
 }

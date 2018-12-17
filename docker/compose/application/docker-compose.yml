@@ -30,7 +30,7 @@ services:
     environment:
       ConnectionStrings__LocalDB: Host=db;Port=5432;Database=competition;Username=postgres;Password=postgres;Pooling=true;
       AppConfig__SecretKey: B2ABF96B2E47A757CC051D709993A89FB09019F9E8BE44EEB7B2BC43A4A19BEE
-      AppConfig__AuthBaseUrl: auth-app
+      AppConfig__AuthBaseUrl: http://auth-app/
       TZ: Europe/Moscow
     depends_on:
       - db

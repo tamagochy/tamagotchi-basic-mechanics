@@ -4,12 +4,12 @@ package ru.tamagotchi.basicmechanics.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import ru.tamagotchi.basicmechanics.domain.ActionCode;
+import ru.tamagotchi.basicmechanics.dto.ActionRequestDto;
 import ru.tamagotchi.basicmechanics.dto.PetCreateRequestDto;
 import ru.tamagotchi.basicmechanics.dto.PetDto;
-import ru.tamagotchi.basicmechanics.dto.PlayRequestDto;
 import ru.tamagotchi.basicmechanics.dto.ResponseDto;
 import ru.tamagotchi.basicmechanics.mapper.PetMapper;
+import ru.tamagotchi.basicmechanics.service.ActionRequest;
 import ru.tamagotchi.basicmechanics.service.api.PetService;
 
 import javax.validation.Valid;
@@ -40,8 +40,8 @@ public class PetController {
 
     @PutMapping(value = "/feed")
     @ResponseBody
-    public ResponseDto<PetDto> feed() {
-        return new ResponseDto<>(mapper.toDto(petService.feed()));
+    public ResponseDto<PetDto> feed(@Valid @RequestBody ActionRequestDto request) {
+        return new ResponseDto<>(mapper.toDto(petService.feed(new ActionRequest(request))));
     }
 
     @PutMapping(value = "/sleep")
@@ -52,13 +52,13 @@ public class PetController {
 
     @PutMapping(value = "/treat")
     @ResponseBody
-    public ResponseDto<PetDto> treat() {
-        return new ResponseDto<>(mapper.toDto(petService.treat()));
+    public ResponseDto<PetDto> treat(@Valid @RequestBody ActionRequestDto request) {
+        return new ResponseDto<>(mapper.toDto(petService.treat(new ActionRequest(request))));
     }
 
     @PutMapping(value = "/play")
     @ResponseBody
-    public ResponseDto<PetDto> play(@Valid @RequestBody PlayRequestDto request) {
-        return new ResponseDto<>(mapper.toDto(petService.play(ActionCode.valueOf(request.getAction()))));
+    public ResponseDto<PetDto> play(@Valid @RequestBody ActionRequestDto request) {
+        return new ResponseDto<>(mapper.toDto(petService.play(new ActionRequest(request))));
     }
 }

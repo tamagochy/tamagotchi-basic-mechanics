@@ -12,5 +12,5 @@ import lombok.Data;
 public class ActionDto {
     private String code;
     private String description;
-    private Integer value;
+    private String room;
 }

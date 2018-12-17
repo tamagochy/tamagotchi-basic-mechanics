@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.tamagotchi.basicmechanics.dao.ScheduleItemDao;
+import ru.tamagotchi.basicmechanics.domain.DiseaseCode;
 import ru.tamagotchi.basicmechanics.domain.Pet;
 import ru.tamagotchi.basicmechanics.domain.PetStatus;
 import ru.tamagotchi.basicmechanics.domain.ScheduleItem;
@@ -79,21 +80,12 @@ public class ScheduleServiceImpl implements ScheduleService {
         LocalTime lastScheduleApplyTime = lastScheduleApplyDateTime.toLocalTime();
         LocalTime currentTime = currentDateTime.toLocalTime();
         if (lastScheduleApplyDateTime.toLocalDate().equals(currentDateTime.toLocalDate())) {
-            schedule.stream()
-                    .filter(e -> e.getTime().isAfter(lastScheduleApplyTime))
-                    .filter(e -> e.getTime().isBefore(currentTime))
-                    .forEach(events::add);
+            filterSchedule(events, lastScheduleApplyTime, currentTime);
         } else {
             LocalTime startOfDay = LocalTime.of(0, 0);
             LocalTime endOfDay = LocalTime.of(23, 59);
-            schedule.stream()
-                    .filter(e -> e.getTime().isAfter(lastScheduleApplyTime))
-                    .filter(e -> e.getTime().isBefore(endOfDay))
-                    .forEach(events::add);
-            schedule.stream()
-                    .filter(e -> e.getTime().isAfter(startOfDay))
-                    .filter(e -> e.getTime().isBefore(currentTime))
-                    .forEach(events::add);
+            filterSchedule(events, lastScheduleApplyTime, endOfDay);
+            filterSchedule(events, startOfDay, currentTime);
         }
 
         if (events.isEmpty()) {
@@ -108,6 +100,13 @@ public class ScheduleServiceImpl implements ScheduleService {
         return changed;
     }
 
+    private void filterSchedule(Set<ScheduleItem> events, LocalTime start, LocalTime end) {
+        schedule.stream()
+                .filter(e -> e.getTime().isAfter(start))
+                .filter(e -> e.getTime().isBefore(end))
+                .forEach(events::add);
+    }
+
     private boolean applyScheduleItem(Pet pet, ScheduleItem item) {
         boolean changed = false;
         if (item.isBeginningOfDay()) {
@@ -116,7 +115,8 @@ public class ScheduleServiceImpl implements ScheduleService {
                 changed = true;
             }
             if (random.nextDouble() > 0.5) {
-                pet.decreaseHealth();
+                pet.decreaseHealth(Pet.INDICATOR_MAX_VALUE);
+                pet.setDiseaseCode(DiseaseCode.random());
                 changed = true;
             }
         }

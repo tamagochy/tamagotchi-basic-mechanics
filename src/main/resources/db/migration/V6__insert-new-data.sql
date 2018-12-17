@@ -1,8 +1,8 @@
 INSERT INTO INDICATORS(ID, CODE, ROOM_CODE, DESCRIPTION)
 VALUES (1, 'health', 'hospital', 'Показатель здоровья питомца'),
        (2, 'hunger', 'kitchen', 'Показатель сытости питомца'),
-       (3, 'rest', 'playRoom', 'Показатель отдыха питомца'),
-       (4, 'mood', 'bedroom', 'Показатель настроения питомца');
+       (3, 'rest', 'bedroom', 'Показатель отдыха питомца'),
+       (4, 'mood', 'playRoom', 'Показатель настроения питомца');
 
 -- Игры
 INSERT INTO ACTIONS(CODE, DESCRIPTION, MAIN_INDICATOR, VALUE_1)

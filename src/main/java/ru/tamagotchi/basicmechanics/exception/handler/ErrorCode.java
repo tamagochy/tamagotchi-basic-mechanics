@@ -19,7 +19,8 @@ public enum ErrorCode {
     BUSINESS_PET_NOT_AVAILABLE("business.PetNotAvailable"),
     BUSINESS_PET_NOT_FOUND("business.PetNotFound"),
     BUSINESS_PET_NOT_EXISTS("business.PetNotExists"),
-    BUSINESS_INDICATOR_FULL("business.IndicatorFull");
+    BUSINESS_INDICATOR_FULL("business.IndicatorFull"),
+    BUSINESS_INVALID_ROOM("business.NotAcceptedRoom");
 
     @Getter
     private final String code;

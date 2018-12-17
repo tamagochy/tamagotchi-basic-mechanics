@@ -25,5 +25,7 @@ public class PetDto {
     @ApiModelProperty(allowableValues = "range[25, 100]")
     private Integer mood;
 
+    private String disease;
+
     private boolean active;
 }

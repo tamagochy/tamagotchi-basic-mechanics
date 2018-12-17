@@ -24,6 +24,6 @@ public class ActionController {
 
     @GetMapping
     public ResponseDto<List<ActionDto>> getAll() {
-        return new ResponseDto<>(mapper.toDtos(service.getActions()));
+        return new ResponseDto<>(mapper.toDtoList(service.getActions()));
     }
 }

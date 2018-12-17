@@ -25,6 +25,6 @@ public class ScheduleController {
 
     @GetMapping
     public ResponseDto<List<ScheduleItemDto>> getSchedule() {
-        return new ResponseDto<>(mapper.toDtos(service.getSchedule()));
+        return new ResponseDto<>(mapper.toDtoList(service.getSchedule()));
     }
 }

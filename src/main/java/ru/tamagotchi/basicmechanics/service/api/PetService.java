@@ -1,7 +1,7 @@
 package ru.tamagotchi.basicmechanics.service.api;
 
-import ru.tamagotchi.basicmechanics.domain.ActionCode;
 import ru.tamagotchi.basicmechanics.domain.Pet;
+import ru.tamagotchi.basicmechanics.service.ActionRequest;
 
 /**
  * Created by makar
@@ -9,14 +9,9 @@ import ru.tamagotchi.basicmechanics.domain.Pet;
  */
 public interface PetService {
     Pet getCurrent();
-
     Pet create(String name);
-
-    Pet feed();
-
+    Pet feed(ActionRequest actionRequest);
     Pet sleep();
-
-    Pet treat();
-
-    Pet play(ActionCode code);
+    Pet treat(ActionRequest actionRequest);
+    Pet play(ActionRequest actionRequest);
 }

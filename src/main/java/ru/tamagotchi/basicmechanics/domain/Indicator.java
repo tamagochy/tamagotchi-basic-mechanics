@@ -25,4 +25,8 @@ public class Indicator {
 
     @Column(length = 100)
     private String description;
+
+    public boolean accepted(IndicatorCode indicator, RoomCode room) {
+        return code == indicator && room == roomCode;
+    }
 }
