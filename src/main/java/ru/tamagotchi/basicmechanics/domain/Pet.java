@@ -66,6 +66,9 @@ public class Pet {
     @Enumerated(EnumType.STRING)
     private DiseaseCode diseaseCode;
 
+    @Transient
+    private Integer score;
+
     public Pet(String name, Integer ownerId, LocalDateTime createTime) {
         this.name = name;
         this.ownerId = ownerId;

@@ -12,6 +12,7 @@ import ru.tamagotchi.basicmechanics.domain.Pet;
 import ru.tamagotchi.basicmechanics.exception.*;
 import ru.tamagotchi.basicmechanics.service.ActionRequest;
 import ru.tamagotchi.basicmechanics.service.api.AuthService;
+import ru.tamagotchi.basicmechanics.service.api.CompetitionService;
 import ru.tamagotchi.basicmechanics.service.api.PetService;
 import ru.tamagotchi.basicmechanics.service.api.ScheduleService;
 
@@ -33,6 +34,7 @@ public class PetServiceImpl implements PetService {
 
     private final ScheduleService scheduleService;
     private final AuthService authService;
+    private final CompetitionService competitionService;
     private final PetDao petDao;
     private final ActionDao actionDao;
 
@@ -48,6 +50,7 @@ public class PetServiceImpl implements PetService {
                 .stream()
                 .findFirst()
                 .orElseThrow(PetNotFoundException::new);
+        fillScore(pet);
         return applySchedule(pet);
     }
 
@@ -120,6 +123,17 @@ public class PetServiceImpl implements PetService {
         checkIndicator(IndicatorCode.mood, pet.getMood());
         pet.increaseMood(action.getValue1());
         return petDao.save(pet);
+    }
+
+    private void fillScore(Pet pet) {
+        log.info("getting current score");
+        try {
+            Integer score = competitionService.currentScore();
+            log.info("current score: {}", score);
+            pet.setScore(score);
+        } catch (Exception e) {
+            log.error("error while make request to competition microservice", e);
+        }
     }
 
     private Action resolveAction(ActionRequest actionRequest, IndicatorCode code) {

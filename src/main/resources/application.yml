@@ -21,3 +21,5 @@ logging:
     ru.tamagotchi: DEBUG
 jwt:
   key: ${JWT_KEY}
+competition:
+  url: ${COMPETITION_URL}

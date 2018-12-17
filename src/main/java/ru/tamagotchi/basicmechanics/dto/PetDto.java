@@ -1,5 +1,6 @@
 package ru.tamagotchi.basicmechanics.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -25,7 +26,10 @@ public class PetDto {
     @ApiModelProperty(allowableValues = "range[25, 100]")
     private Integer mood;
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String disease;
+
+    private Integer score;
 
     private boolean active;
 }

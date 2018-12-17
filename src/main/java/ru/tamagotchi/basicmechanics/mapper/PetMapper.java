@@ -17,7 +17,8 @@ public interface PetMapper {
 
     @Mappings({
             @Mapping(expression = "java(pet.getStatus() == PetStatus.ACTIVE)", target = "active"),
-            @Mapping(source = "diseaseCode", target = "disease")
+            @Mapping(source = "diseaseCode", target = "disease"),
+            @Mapping(source = "score", target = "score")
     })
     PetDto toDto(Pet pet);
 }
