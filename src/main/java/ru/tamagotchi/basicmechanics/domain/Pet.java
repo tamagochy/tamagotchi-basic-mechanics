@@ -63,6 +63,10 @@ public class Pet {
     @Enumerated(EnumType.STRING)
     private PetStatus status;
 
+    @Column(name = "DISEASE_CODE", length = 20)
+    @Enumerated(EnumType.STRING)
+    private DiseaseCode diseaseCode;
+
     public Pet(String name, Integer ownerId, LocalDateTime createTime) {
         this.name = name;
         this.ownerId = ownerId;

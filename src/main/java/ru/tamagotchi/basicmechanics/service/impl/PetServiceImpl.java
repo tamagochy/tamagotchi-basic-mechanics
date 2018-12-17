@@ -107,7 +107,7 @@ public class PetServiceImpl implements PetService {
         Pet pet = getCurrent();
         assertNotSleep(pet);
         checkIndicator("mood", pet.getMood());
-        pet.increaseMood(action.getValue());
+        pet.increaseMood(action.getValue1());
         return petDao.save(pet);
     }
 
