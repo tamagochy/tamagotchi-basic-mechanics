@@ -88,6 +88,7 @@ public class PetServiceImpl implements PetService {
         if (action.getAdditionalIndicator() != null) {
             pet.decreaseIndicator(action.getAdditionalIndicator(), -action.getValue2());
         }
+        competitionService.changeScore(action.getCode(), action.getMainIndicator().getRoomCode(), null);
         return petDao.save(pet);
     }
 
@@ -111,6 +112,13 @@ public class PetServiceImpl implements PetService {
         if (pet.getDiseaseCode() != null && pet.getDiseaseCode() == action.getDiseaseCode()) {
             log.info("disease is cured");
             pet.setDiseaseCode(null);
+            competitionService.changeScore(
+                    action.getCode(),
+                    action.getMainIndicator().getRoomCode(),
+                    action.getDiseaseCode()
+            );
+        } else {
+            competitionService.changeScore(action.getCode(), action.getMainIndicator().getRoomCode(), null);
         }
         return petDao.save(pet);
     }
@@ -122,6 +130,7 @@ public class PetServiceImpl implements PetService {
         assertNotSleep(pet);
         checkIndicator(IndicatorCode.mood, pet.getMood());
         pet.increaseMood(action.getValue1());
+        competitionService.changeScore(action.getCode(), action.getMainIndicator().getRoomCode(), null);
         return petDao.save(pet);
     }
 
