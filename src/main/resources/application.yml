@@ -22,4 +22,4 @@ logging:
 jwt:
   key: ${JWT_KEY}
 competition:
-  url: ${COMPETITION_URL}
+  url: ${COMPETITION_URL:192.168.99.100:8090}
