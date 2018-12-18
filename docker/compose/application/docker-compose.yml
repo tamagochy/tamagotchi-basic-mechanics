@@ -17,7 +17,7 @@ services:
     image: itine/tamagotchi-authorization
     restart: always
     ports:
-      - "5001:80"
+      - 5001:80
     environment:
       ConnectionStrings__LocalDB: Host=db;Port=5432;Database=auth;Username=postgres;Password=postgres;Pooling=true;
       AppInfo__SecretKey: B2ABF96B2E47A757CC051D709993A89FB09019F9E8BE44EEB7B2BC43A4A19BEE
