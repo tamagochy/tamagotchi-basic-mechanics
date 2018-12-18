@@ -5,10 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.tamagotchi.basicmechanics.dao.ActionDao;
 import ru.tamagotchi.basicmechanics.dao.PetDao;
-import ru.tamagotchi.basicmechanics.domain.Action;
-import ru.tamagotchi.basicmechanics.domain.Indicator;
-import ru.tamagotchi.basicmechanics.domain.IndicatorCode;
-import ru.tamagotchi.basicmechanics.domain.Pet;
+import ru.tamagotchi.basicmechanics.domain.*;
 import ru.tamagotchi.basicmechanics.exception.*;
 import ru.tamagotchi.basicmechanics.service.ActionRequest;
 import ru.tamagotchi.basicmechanics.service.api.AuthService;
@@ -17,6 +14,7 @@ import ru.tamagotchi.basicmechanics.service.api.PetService;
 import ru.tamagotchi.basicmechanics.service.api.ScheduleService;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 import static java.time.LocalDateTime.now;
@@ -32,6 +30,8 @@ import static ru.tamagotchi.basicmechanics.domain.PetStatus.*;
 @Slf4j
 public class PetServiceImpl implements PetService {
 
+    private static final List<PetStatus> STATUSES = Arrays.asList(ACTIVE, SLEEP);
+
     private final ScheduleService scheduleService;
     private final AuthService authService;
     private final CompetitionService competitionService;
@@ -42,11 +42,12 @@ public class PetServiceImpl implements PetService {
 
     @Override
     public Pet getCurrent() {
-        Long totalPets = petDao.countAllByOwnerId(authService.getCurrentUserId());
+        Integer userId = authService.getCurrentUserId();
+        Long totalPets = petDao.countAllByOwnerId(userId);
         if (totalPets == 0) {
             throw new PetNotExistsException();
         }
-        Pet pet = petDao.getAllByOwnerIdAndStatusIn(authService.getCurrentUserId(), Arrays.asList(ACTIVE, SLEEP))
+        Pet pet = petDao.getAllByOwnerIdAndStatusIn(userId, STATUSES)
                 .stream()
                 .findFirst()
                 .orElseThrow(PetNotFoundException::new);
