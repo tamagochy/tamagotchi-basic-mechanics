@@ -1,5 +1,11 @@
 version: '3'
 services:
+  web-client:
+    image: makar1031/tamagotchi-web-client
+    ports:
+      - 80:80
+    depends_on:
+      - base-app
   base-app:
     image: makar1031/tamagotchi-basic-mechanics
     ports:
