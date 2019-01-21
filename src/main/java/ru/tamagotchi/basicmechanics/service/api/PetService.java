@@ -8,7 +8,7 @@ import ru.tamagotchi.basicmechanics.service.ActionRequest;
  * 02.10.2018 18:26
  */
 public interface PetService {
-    Pet getCurrent();
+    Pet getCurrent(boolean fetchScore);
     Pet create(String name);
     Pet feed(ActionRequest actionRequest);
     Pet sleep();

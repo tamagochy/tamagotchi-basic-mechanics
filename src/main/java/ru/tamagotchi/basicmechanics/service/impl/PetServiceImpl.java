@@ -41,7 +41,7 @@ public class PetServiceImpl implements PetService {
     private Random random = new Random();
 
     @Override
-    public Pet getCurrent() {
+    public Pet getCurrent(boolean fetchScore) {
         Integer userId = authService.getCurrentUserId();
         Long totalPets = petDao.countAllByOwnerId(userId);
         if (totalPets == 0) {
@@ -51,7 +51,9 @@ public class PetServiceImpl implements PetService {
                 .stream()
                 .findFirst()
                 .orElseThrow(PetNotFoundException::new);
-        fillScore(pet);
+        if (fetchScore) {
+            pet.setScore(fetchScore());
+        }
         return applySchedule(pet);
     }
 
@@ -82,7 +84,7 @@ public class PetServiceImpl implements PetService {
     @Override
     public Pet feed(ActionRequest actionRequest) {
         Action action = resolveAction(actionRequest, IndicatorCode.hunger);
-        Pet pet = getCurrent();
+        Pet pet = getCurrent(false);
         assertNotSleep(pet);
         checkIndicator(IndicatorCode.hunger, pet.getHunger());
         pet.increaseHunger(action.getValue1());
@@ -90,23 +92,25 @@ public class PetServiceImpl implements PetService {
             pet.decreaseIndicator(action.getAdditionalIndicator(), -action.getValue2());
         }
         competitionService.changeScore(action.getCode(), action.getMainIndicator().getRoomCode(), null);
+        pet.setScore(fetchScore());
         return petDao.save(pet);
     }
 
     @Override
     public Pet sleep() {
-        Pet pet = getCurrent();
+        Pet pet = getCurrent(false);
         assertNotSleep(pet);
         checkIndicator(IndicatorCode.rest, pet.getRest());
         pet.increaseRest();
         pet.setStatus(SLEEP);
+        pet.setScore(fetchScore());
         return petDao.save(pet);
     }
 
     @Override
     public Pet treat(ActionRequest actionRequest) {
         Action action = resolveAction(actionRequest, IndicatorCode.health);
-        Pet pet = getCurrent();
+        Pet pet = getCurrent(false);
         assertNotSleep(pet);
         checkIndicator(IndicatorCode.health, pet.getHealth());
         pet.increaseHealth(action.getValue1());
@@ -121,29 +125,32 @@ public class PetServiceImpl implements PetService {
         } else {
             competitionService.changeScore(action.getCode(), action.getMainIndicator().getRoomCode(), null);
         }
+        pet.setScore(fetchScore());
         return petDao.save(pet);
     }
 
     @Override
     public Pet play(ActionRequest actionRequest) {
         Action action = resolveAction(actionRequest, IndicatorCode.mood);
-        Pet pet = getCurrent();
+        Pet pet = getCurrent(false);
         assertNotSleep(pet);
         checkIndicator(IndicatorCode.mood, pet.getMood());
         pet.increaseMood(action.getValue1());
         competitionService.changeScore(action.getCode(), action.getMainIndicator().getRoomCode(), null);
+        pet.setScore(fetchScore());
         return petDao.save(pet);
     }
 
-    private void fillScore(Pet pet) {
+    private Integer fetchScore() {
         log.info("getting current score");
         try {
             Integer score = competitionService.currentScore();
             log.info("current score: {}", score);
-            pet.setScore(score);
+            return score;
         } catch (Exception e) {
             log.error("error while make request to competition microservice", e);
         }
+        return null;
     }
 
     private Action resolveAction(ActionRequest actionRequest, IndicatorCode code) {

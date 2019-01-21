@@ -28,7 +28,7 @@ public class PetController {
 
     @GetMapping
     public ResponseDto<PetDto> current() {
-        return new ResponseDto<>(mapper.toDto(petService.getCurrent()));
+        return new ResponseDto<>(mapper.toDto(petService.getCurrent(true)));
     }
 
     @PostMapping(value = "/create")
