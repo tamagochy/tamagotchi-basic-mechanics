@@ -1,0 +1,44 @@
+version: '3'
+services:
+  auth-app:
+    image: itine/tamagotchi-authorization
+    restart: always
+    ports:
+      - 5001:80
+    environment:
+      ConnectionStrings__LocalDB: Host=db;Port=5432;Database=auth;Username=postgres;Password=postgres;Pooling=true;
+      AppInfo__SecretKey: B2ABF96B2E47A757CC051D709993A89FB09019F9E8BE44EEB7B2BC43A4A19BEE
+      TZ: Europe/Moscow
+    depends_on:
+      - db
+  competition-app:
+    image: palicpiotr/tamagotchi.competition:latest
+    ports:
+      - 8090:80
+    environment:
+      ConnectionStrings__LocalDB: Host=db;Port=5432;Database=competition;Username=postgres;Password=postgres;Pooling=true;
+      AppConfig__SecretKey: B2ABF96B2E47A757CC051D709993A89FB09019F9E8BE44EEB7B2BC43A4A19BEE
+      AppConfig__AuthBaseUrl: http://auth-app/
+      TZ: Europe/Moscow
+    depends_on:
+      - db
+  db:
+    image: makar1031/tamagotchi-postgres:1.0.0
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: postgres
+      DB_BASE: base
+      DB_AUTH: auth
+      DB_COMPETITION: competition
+    volumes:
+      - "postgres-data:/var/lib/postgresql/data"
+  adminer:
+    image: adminer:4
+    restart: always
+    ports:
+      - 9999:8080
+volumes:
+  postgres-data:
+    driver: local

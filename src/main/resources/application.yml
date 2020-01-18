@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: tamagotchi-basic-mechanics
+  datasource:
+    url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:postgres}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties.hibernate.temp.use_jdbc_metadata_defaults: false
+    properties.hibernate.connection.autocommit: true
+    show-sql: true
+  jackson:
+    serialization:
+      WRITE_DATES_AS_TIMESTAMPS: false
+server:
+  port: 8085
+logging:
+  level:
+    ru.tamagotchi: DEBUG
+jwt:
+  key: ${JWT_KEY}
+competition:
+  url: ${COMPETITION_URL:192.168.99.100:8090}
