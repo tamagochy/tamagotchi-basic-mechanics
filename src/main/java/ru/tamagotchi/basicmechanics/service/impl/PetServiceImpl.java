@@ -1,5 +1,7 @@
 package ru.tamagotchi.basicmechanics.service.impl;
 
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -13,6 +15,7 @@ import ru.tamagotchi.basicmechanics.service.api.CompetitionService;
 import ru.tamagotchi.basicmechanics.service.api.PetService;
 import ru.tamagotchi.basicmechanics.service.api.ScheduleService;
 
+import javax.annotation.PostConstruct;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -37,8 +40,22 @@ public class PetServiceImpl implements PetService {
     private final CompetitionService competitionService;
     private final PetDao petDao;
     private final ActionDao actionDao;
+    private final MeterRegistry meterRegistry;
 
     private Random random = new Random();
+
+    private Counter feedCounter;
+    private Counter playCounter;
+    private Counter sleepCounter;
+    private Counter treatCounter;
+
+    @PostConstruct
+    public void init() {
+        feedCounter = meterRegistry.counter("base.actions", "action", "feed");
+        playCounter = meterRegistry.counter("base.actions", "action", "play");
+        sleepCounter = meterRegistry.counter("base.actions", "action", "sleep");
+        treatCounter = meterRegistry.counter("base.actions", "action", "treat");
+    }
 
     @Override
     public Pet getCurrent(boolean fetchScore) {
@@ -93,6 +110,7 @@ public class PetServiceImpl implements PetService {
         }
         competitionService.changeScore(action.getCode(), action.getMainIndicator().getRoomCode(), null);
         pet.setScore(fetchScore());
+        feedCounter.increment();
         return petDao.save(pet);
     }
 
@@ -104,6 +122,7 @@ public class PetServiceImpl implements PetService {
         pet.increaseRest();
         pet.setStatus(SLEEP);
         pet.setScore(fetchScore());
+        sleepCounter.increment();
         return petDao.save(pet);
     }
 
@@ -126,6 +145,7 @@ public class PetServiceImpl implements PetService {
             competitionService.changeScore(action.getCode(), action.getMainIndicator().getRoomCode(), null);
         }
         pet.setScore(fetchScore());
+        treatCounter.increment();
         return petDao.save(pet);
     }
 
@@ -138,6 +158,7 @@ public class PetServiceImpl implements PetService {
         pet.increaseMood(action.getValue1());
         competitionService.changeScore(action.getCode(), action.getMainIndicator().getRoomCode(), null);
         pet.setScore(fetchScore());
+        playCounter.increment();
         return petDao.save(pet);
     }
 
