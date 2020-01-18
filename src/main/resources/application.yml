@@ -22,4 +22,18 @@ logging:
 jwt:
   key: ${JWT_KEY}
 competition:
-  url: ${COMPETITION_URL:192.168.99.100:8090}
+  url: ${COMPETITION_URL:localhost:8090}
+management:
+  endpoint:
+    prometheus:
+      enabled: true
+    metrics:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  metrics:
+    export:
+      prometheus:
+        enabled: true

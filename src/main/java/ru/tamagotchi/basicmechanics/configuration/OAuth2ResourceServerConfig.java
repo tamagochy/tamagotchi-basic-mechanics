@@ -27,7 +27,8 @@ public class OAuth2ResourceServerConfig extends ResourceServerConfigurerAdapter 
             "/v2/api-docs",
             "/swagger-resources/**",
             "/swagger-ui.html",
-            "/webjars/**"
+            "/webjars/**",
+            "/actuator/**"
     };
 
     private final JwtConfiguration configuration;
