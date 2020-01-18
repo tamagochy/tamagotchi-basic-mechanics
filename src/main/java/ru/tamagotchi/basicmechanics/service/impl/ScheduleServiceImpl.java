@@ -1,5 +1,7 @@
 package ru.tamagotchi.basicmechanics.service.impl;
 
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -31,13 +33,16 @@ import static java.util.Collections.unmodifiableList;
 @Slf4j
 public class ScheduleServiceImpl implements ScheduleService {
     private final ScheduleItemDao dao;
+    private final MeterRegistry meterRegistry;
 
     private List<ScheduleItem> schedule;
     private Random random = new Random();
+    private Counter leaveCounter;
 
     @PostConstruct
     public void init() {
         schedule = unmodifiableList(dao.findAll());
+        leaveCounter = meterRegistry.counter("base.pet.leave");
     }
 
     @Override
@@ -55,21 +60,25 @@ public class ScheduleServiceImpl implements ScheduleService {
         if (DAYS.between(pet.getLastHealthIncreaseTime(), currentDateTime) >= 1) {
             log.debug("pet leave because health has critical value");
             pet.leave();
+            leaveCounter.increment();
             return true;
         }
         if (DAYS.between(pet.getLastHungerIncreaseTime(), currentDateTime) >= 1) {
             log.debug("pet leave because hunger has critical value");
             pet.leave();
+            leaveCounter.increment();
             return true;
         }
         if (DAYS.between(pet.getLastRestIncreaseTime(), currentDateTime) >= 1) {
             log.debug("pet leave because rest has critical value");
             pet.leave();
+            leaveCounter.increment();
             return true;
         }
         if (DAYS.between(pet.getLastMoodIncreaseTime(), currentDateTime) >= 1) {
             log.debug("pet leave because mood has critical value");
             pet.leave();
+            leaveCounter.increment();
             return true;
         }
 
